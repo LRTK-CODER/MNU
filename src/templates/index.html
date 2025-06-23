@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}SecureApp - Home{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="jumbotron bg-primary text-white p-5 rounded mb-4">
+            <div class="container-fluid py-5">
+                <h1 class="display-5 fw-bold">Welcome to SecureApp</h1>
+                <p class="col-md-8 fs-4">A modern, secure web application built with Flask. Experience the power of secure authentication and data management.</p>
+                <a class="btn btn-light btn-lg" href="{{ url_for('login') }}" role="button">Get Started</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="fas fa-lock text-primary"></i> Secure Authentication
+                </h5>
+                <p class="card-text">Industry-standard security measures to protect your data and ensure safe access to your account.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="fas fa-chart-line text-success"></i> Analytics Dashboard
+                </h5>
+                <p class="card-text">Comprehensive dashboard with real-time analytics and insights to help you make informed decisions.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="fas fa-cloud text-info"></i> Cloud Integration
+                </h5>
+                <p class="card-text">Seamless cloud integration for data synchronization and backup across all your devices.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-lg-6">
+        <h3>Why Choose SecureApp?</h3>
+        <ul class="list-unstyled">
+            <li class="mb-2"><i class="fas fa-check text-success"></i> Enterprise-grade security</li>
+            <li class="mb-2"><i class="fas fa-check text-success"></i> User-friendly interface</li>
+            <li class="mb-2"><i class="fas fa-check text-success"></i> 24/7 customer support</li>
+            <li class="mb-2"><i class="fas fa-check text-success"></i> Regular security updates</li>
+        </ul>
+    </div>
+    <div class="col-lg-6">
+        <h3>System Status</h3>
+        <div id="status-info" class="alert alert-info">
+            <i class="fas fa-spinner fa-spin"></i> Loading system status...
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Fetch system status
+fetch('/api/status')
+    .then(response => response.json())
+    .then(data => {
+        const statusDiv = document.getElementById('status-info');
+        statusDiv.innerHTML = `
+            <i class="fas fa-check-circle text-success"></i>
+            System is running (v${data.version}) - Environment: ${data.environment}
+        `;
+        statusDiv.className = 'alert alert-success';
+    })
+    .catch(error => {
+        const statusDiv = document.getElementById('status-info');
+        statusDiv.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Unable to fetch system status';
+        statusDiv.className = 'alert alert-warning';
+    });
+</script>
+{% endblock %}
